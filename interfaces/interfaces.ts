@@ -1,5 +1,3 @@
-
-
 export interface Product{
  index: number,
  articleName: string,
@@ -24,7 +22,7 @@ export interface Type{
  statusActive: boolean
 }
 export interface Review{
-    username: string,
-    rating: number,
-    comment: string,
+ username: string,
+ rating: number,
+ comment: string,
 }
