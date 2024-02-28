@@ -80,7 +80,7 @@ async function main() {
           "Voer de ID waarop je wil filteren in: "
         );
         let filteredProduct: Product[] = products.filter((e) => e.index == id);
-        // Since index is unique, will always return just one or no item(s), so display first item in returned list if th elist is not empty
+        // Since index is unique, will always return just 1 or 0 item(s), display first item in returned list if the list is not empty
         if (filteredProduct.length != 0) {
           displayProduct(filteredProduct[0]);
         } else {
