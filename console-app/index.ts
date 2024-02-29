@@ -123,7 +123,10 @@ async function main() {
         if (filteredProduct.length != 0) {
           displayProduct(filteredProduct[0]);
         } else {
+          console.clear();
           console.log(`Geen product gevonden met id: ${id}`);
+          console.log("Druk op 'ENTER' om verder te gaan");
+          rl.question();
         }
         break;
       default:
