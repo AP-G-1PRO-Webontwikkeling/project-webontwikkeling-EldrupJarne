@@ -1,6 +1,5 @@
 import * as rl from "readline-sync";
 import { Product, Type, Review } from "../interfaces/interfaces";
-import { Console } from "console";
 
 const getProduct = async (): Promise<Product[]> => {
   try {
