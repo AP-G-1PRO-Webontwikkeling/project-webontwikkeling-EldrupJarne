@@ -19,6 +19,7 @@ const getProduct = async (): Promise<Product[]> => {
   }
 };
 
+/*
 const displayProduct = (product: Product): void => {
   console.log(
     `0 Product (id: ${product.index}):\n| ${product.articleName} van ${
@@ -40,6 +41,47 @@ const displayProduct = (product: Product): void => {
     } - in wenslijstje\n0`
   );
 };
+*/
+
+const displayProduct = (product: Product): void => {
+  console.clear();
+  console.log(
+    `0----------------------------------------------------------------\n| Product Details - ${
+      product.articleName
+    } (ID: ${product.index})\n| Merk: ${product.brand}\n| Type: ${
+      product.type.typeName
+    } (type ID: ${product.type.id})\n| - Beschrijving: ${
+      product.type.description
+    }\n| - Tags: ${product.type.tags.join(", ")}\n| - Status Actief: ${
+      product.type.statusActive ? "JA" : "NEE"
+    }\n| Prijs: $${product.price.toFixed(2)}\n| Laatst verkocht: ${
+      product.lastSold
+    }\n| Beschrijving: ${product.infoShort}\n| Informatie: ${
+      product.info
+    }\n| Aantal: ${product.count}\n| Staat in winkelwagen: ${
+      product.isOnCart ? "JA" : "NEE"
+    }\n| Staat in wenslijstje: ${
+      product.isOnWishlist ? "JA" : "NEE"
+    }\n| Afbeelding: ${
+      product.imageSrc
+    }\n|\n| Specificaties:\n${product.specifications
+      .map((spec) => `|   - ${spec}`)
+      .join("\n")}\n| \n| Klanten recensies:\n${product.reviews
+      .map(
+        (review, index) =>
+          `| - Recensie ${index + 1}:\n|   - Gebruikersnaam: ${
+            review.username
+          }\n|   - Score: ${review.rating}/5\n|   - Opmerking: ${
+            review.comment
+          }`
+      )
+      .join(
+        "\n|\n"
+      )}\n0----------------------------------------------------------------`
+  );
+  console.log("Druk op 'ENTER' om verder te gaan");
+  rl.question();
+};
 const reviewScore = (reviews: Review[]): string => {
   let avgrating: number = 0;
   for (const review of reviews) {
@@ -55,8 +97,8 @@ const reviewScore = (reviews: Review[]): string => {
 async function main() {
   let quit: boolean = false;
 
+  let products: Product[] = await getProduct();
   while (!quit) {
-    let products: Product[] = await getProduct();
     let mainMenuOpts: string[] = ["Bekijk alle data", "Filter op ID"];
     console.clear();
     let mainMenuChoice: number = rl.keyInSelect(mainMenuOpts, "Kies uit");
@@ -68,10 +110,7 @@ async function main() {
         console.log("case 1");
 
         for (const product of products) {
-          console.clear();
           displayProduct(product);
-          console.log("Druk op 'ENTER' om verder te gaan");
-          rl.question();
         }
         break;
       case 1:
@@ -86,8 +125,6 @@ async function main() {
         } else {
           console.log(`Geen product gevonden met id: ${id}`);
         }
-        console.log("Druk op 'ENTER' om verder te gaan");
-        rl.question();
         break;
       default:
         console.log("nog niet geimplementeerd!");

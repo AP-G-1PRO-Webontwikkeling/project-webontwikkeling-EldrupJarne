@@ -16,7 +16,7 @@ export interface Product {
 }
 export interface Type {
   id: number;
-  typename: string;
+  typeName: string;
   description: string;
   tags: string[];
   statusActive: boolean;
