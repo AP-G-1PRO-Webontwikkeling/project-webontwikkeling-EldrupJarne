@@ -56,18 +56,7 @@ const displayProduct = (product: Product): void => {
   console.log("Druk op 'ENTER' om verder te gaan");
   rl.question();
 };
-const reviewScore = (reviews: Review[]): string => {
-  let avgrating: number = 0;
-  for (const review of reviews) {
-    avgrating += review.rating;
-  }
-  avgrating = Math.round(avgrating / reviews.length);
-  let reviewStr: string = "";
-  for (let i = 0; i < avgrating; i++) {
-    reviewStr += "* ";
-  }
-  return reviewStr;
-};
+
 async function main() {
   let quit: boolean = false;
 
