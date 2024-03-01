@@ -17,31 +17,6 @@ const getProduct = async (): Promise<Product[]> => {
     throw new Error(`Error fetching data: ${err}`);
   }
 };
-
-/*
-const displayProduct = (product: Product): void => {
-  console.log(
-    `0 Product (id: ${product.index}):\n| ${product.articleName} van ${
-      product.brand
-    } - €${product.price}\n|\n| ${product.infoShort}\n| Score: ${reviewScore(
-      product.reviews
-    )}\n|\n| Specificaties:`
-  );
-  for (const spec of product.specifications) {
-    console.log(`| -${spec}`);
-  }
-  console.log(
-    `|\n| Laatst verkocht (yyyy-MM-dd): ${
-      product.lastSold.split("T")[0]
-    }\n| Product type: ${product.type.typename}\n| ${
-      product.isOnCart ? "[X]" : "[ ]"
-    } - in winkelwagen\n| ${
-      product.isOnWishlist ? "[X]" : "[ ]"
-    } - in wenslijstje\n0`
-  );
-};
-*/
-
 const displayProduct = (product: Product): void => {
   console.clear();
   console.log(
