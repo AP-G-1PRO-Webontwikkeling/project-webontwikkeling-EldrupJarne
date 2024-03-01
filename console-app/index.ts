@@ -11,7 +11,7 @@ const getProduct = async (): Promise<Product[]> => {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-    let data = await response.json();
+    let data: Product[] = await response.json();
     return data;
   } catch (err) {
     throw new Error(`Error fetching data: ${err}`);
@@ -57,7 +57,7 @@ const displayProduct = (product: Product): void => {
   rl.question();
 };
 
-async function main() {
+async function main(): Promise<void> {
   let quit: boolean = false;
 
   let products: Product[] = await getProduct();
