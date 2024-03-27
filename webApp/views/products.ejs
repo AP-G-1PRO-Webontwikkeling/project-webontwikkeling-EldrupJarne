@@ -10,19 +10,20 @@
             <caption class="text-light">List of products</caption>
             <thead>
                 <tr>
-                    <th scope="col" colspan="2">Article</th>
-                    <th scope="col">brand</th>
-                    <th scope="col">price</th>
-                    <th scope="col">last sold</th>
-                    <th scope="col">product type</th>
-                    <th scope="col">in stock</th>
+                    <!-- Make these send queries to the server -->
+                    <th scope="col" colspan="2" class="th" , data-sort="articleName">Article</th>
+                    <th scope="col" class="th">brand</th>
+                    <th scope="col" class="th">price</th>
+                    <th scope="col" class="th">last sold</th>
+                    <th scope="col" class="th">product type</th>
+                    <th scope="col" class="th">in stock</th>
                 </tr>
             </thead>
             <tbody class="table-group-devider">
                 <% for (const product of products) { %>
                     <tr scope="row">
                         <td class="d-flex gap-2 justify-content-center">
-                            <img height="50px" width="50px" src="<%= product.imageSrc %>" alt="<%= product.articleName %>">
+                            <img width="60px" src="<%= product.imageSrc %>" alt="<%= product.articleName %>">
 
                         </td>
                         <td>

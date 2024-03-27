@@ -22,7 +22,25 @@ app.get("/", (req, res) => {
     res.render("index", { items: items })
 })
 app.get("/products", (req, res) => {
-    res.render("products", { products: products })
+    let headers = document.getElementsByClassName("th");
+    let headerIcons: string[] = ["", "", "", "", "", ""];
+    for (let i = 0; i < headers.length; i++) {
+        let header = headers[i];
+        header.addEventListener("click", (e) => {
+            e.preventDefault();
+            if (headerIcons[i] == "") {
+                console.log(products[0]);
+
+                products.sort((a, b) => a["articleName"].localeCompare(b["articleName"]))
+                headerIcons[i] = "bi-up"
+                console.log(products[0]);
+            }
+        })
+    }
+    res.render("products", {
+        products: products,
+        headers: headerIcons,
+    })
 })
 app.listen(app.get("port"), async () => {
     console.log("[server] listening at http://localhost:" + app.get("port"));
