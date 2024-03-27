@@ -1,7 +1,25 @@
 <%- include("partials/header") %>
-    <section class="fs-3">
+    <section class="fs-3 d-flex flex-column">
         <h1 class="display-2 fw-bold mb-3">Wecome to Alpine Pulse Product Data Oveview</h1>
-        <p>Welcome to Alpine Pulse - Overview, your go-to destination for accessing comprehensive data on mountain bike products.</p>
-        <p>Our API provides seamless access to a vast array of mountain bike products, including bikes, components, apparel, and accessories, sourced from our imaginary webshop.</p>
+        <p>Your go-to destination for accessing comprehensive data on mountain bike products.</p>
+        <p>Our API provides seamless access to a vast array of mountain bike products, including bikes, components, apparel, and accessories, sourced from our imaginary webshop</p>
+    </section>
+    <h1 class="display-2 fw-bold">Some of the products</h1>
+    <section class="d-flex flex-wrap mb-5 gap-3 justify-content-evenly">
+        <% for (const item of items) { %>
+            <article class="bg-dark card col-12 col-md-5 col-lg-3 p-3">
+                <a href="" class="text-white text-decoration-none d-flex flex-wrap h-100">
+                    <img src="<%= item.src %>" alt="<%= item.name %>" class="col-12 rounded">
+                    <h1 class="display-6 col-12">
+                        <%= item.name %>
+                    </h1>
+                    <p>
+                        <%= item.brand %>
+                    </p>
+                    <p class="mt-auto col-12">$<%= item.price %>
+                    </p>
+                </a>
+            </article>
+            <% } %>
     </section>
     <%- include("partials/footer") %>
