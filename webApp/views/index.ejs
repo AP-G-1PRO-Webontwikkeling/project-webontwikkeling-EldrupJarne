@@ -8,7 +8,7 @@
     <section class="d-flex flex-wrap mb-5 gap-3 justify-content-evenly">
         <% for (const item of items) { %>
             <article class="bg-dark card col-12 col-md-5 col-lg-3 p-3">
-                <a href="" class="text-white text-decoration-none d-flex flex-wrap h-100">
+                <a href="/products/<%= item.name %>" class="text-white text-decoration-none d-flex flex-wrap h-100">
                     <img src="<%= item.src %>" alt="<%= item.name %>" class="col-12 rounded">
                     <h1 class="display-6 col-12">
                         <%= item.name %>

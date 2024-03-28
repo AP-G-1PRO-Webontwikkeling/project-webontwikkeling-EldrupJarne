@@ -6,6 +6,7 @@ import * as f from "./functions"
 
 let app = express();
 app.set("view engine", "ejs");
+app.use(express.static('public'))
 app.set("port", 5500);
 
 let products: i.Product[];
@@ -23,7 +24,18 @@ app.get("/", (req, res) => {
     }))
     res.render("index", { items: items })
 })
+app.get("/products/:articleName", (req, res) => {
 
+    let product: i.Product | undefined = products.find(e => e.articleName == req.params.articleName)
+    if (product === undefined) {
+        let errormessage = `"${req.params.articleName}" is not a product`
+        res.render("404", {
+            error: errormessage
+        })
+    } else {
+        res.render("product", { product: product })
+    }
+})
 app.get("/products", (req, res) => {
     let shopProducts = [...products]
 
@@ -69,6 +81,7 @@ app.get("/products", (req, res) => {
         sortParam: sortParam
     })
 })
+
 app.listen(app.get("port"), async () => {
     console.log("[server] listening at http://localhost:" + app.get("port"));
     let productsFetch: any = await fetch("https://github.com/EldrupJarne/JSON-Host/raw/main/products.json");
