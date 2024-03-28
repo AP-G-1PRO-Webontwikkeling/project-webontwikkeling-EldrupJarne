@@ -1,4 +1,5 @@
 export interface Product {
+  [key: string]: any;
   index: number;
   articleName: string;
   price: number;
@@ -25,4 +26,7 @@ export interface Review {
   username: string;
   rating: number;
   comment: string;
+}
+export interface DirectionMap {
+  [key: string]: any
 }

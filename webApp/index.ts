@@ -10,6 +10,8 @@ app.set("port", 5500);
 
 let products: i.Product[];
 let types: i.Type[];
+let lastSortParam: string = "articleName";
+
 
 app.get("/", (req, res) => {
     let rng: number[] = f.getRandomNumbers(0, products.length, 6);
@@ -21,25 +23,43 @@ app.get("/", (req, res) => {
     }))
     res.render("index", { items: items })
 })
-app.get("/products", (req, res) => {
-    let headers = document.getElementsByClassName("th");
-    let headerIcons: string[] = ["", "", "", "", "", ""];
-    for (let i = 0; i < headers.length; i++) {
-        let header = headers[i];
-        header.addEventListener("click", (e) => {
-            e.preventDefault();
-            if (headerIcons[i] == "") {
-                console.log(products[0]);
 
-                products.sort((a, b) => a["articleName"].localeCompare(b["articleName"]))
-                headerIcons[i] = "bi-up"
-                console.log(products[0]);
+app.get("/products", (req, res) => {
+    let shopProducts = [...products]
+
+    let filter: string = "";
+    let sortParam: string = "articleName";
+    let direction: string = "";
+
+    if (Object.keys(req.query).length !== 0) {
+        filter = `${req.query.filter}`;
+        sortParam = `${req.query.sortParam}`;
+        direction = `${req.query.direction}`;
+        // filter
+
+        // sort 
+        if (sortParam === lastSortParam) {
+            direction = f.toggleDirection(direction)
+        } else {
+            direction = "1";
+        }
+        shopProducts.sort((a, b) => {
+            if (direction === "" || direction === "0") {
+                return 0;
+            } else if (direction === "1") {
+                return f.compareValues(a, b, sortParam)
+            } else {
+                return f.compareValues(a, b, sortParam) * -1;
             }
         })
+        lastSortParam = sortParam
     }
+
     res.render("products", {
-        products: products,
-        headers: headerIcons,
+        products: shopProducts,
+        filter: filter,
+        direction: direction,
+        sortParam: sortParam
     })
 })
 app.listen(app.get("port"), async () => {

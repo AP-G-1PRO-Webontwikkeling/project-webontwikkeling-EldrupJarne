@@ -1,8 +1,10 @@
 <%- include("partials/header") %>
     <section>
-        <form action="">
-            <input type="search" name="" id="">
-            <input type="submit" value="">
+        <form action="/products?filter=<%= filter %>&sortParam=<%= sortParam %>&direction=<%= direction %>" method="GET">
+            <div class=" container form-control d-flex">
+                <button type="submit" class="bg-white text-dark border-0"><i class="bi bi-search form"></i></button>
+                <input class="form-control border-0" type="search" name="filter" id="filter" value="<%= filter %>">
+            </div>
         </form>
     </section>
     <section class="bg-dark p-3 rounded table-responsive">
@@ -10,13 +12,48 @@
             <caption class="text-light">List of products</caption>
             <thead>
                 <tr>
-                    <!-- Make these send queries to the server -->
-                    <th scope="col" colspan="2" class="th" , data-sort="articleName">Article</th>
-                    <th scope="col" class="th">brand</th>
-                    <th scope="col" class="th">price</th>
-                    <th scope="col" class="th">last sold</th>
-                    <th scope="col" class="th">product type</th>
-                    <th scope="col" class="th">in stock</th>
+                    <th scope="col" colspan="2"><a href="/products?filter=<%= filter %>&sortParam=articleName&direction=<%= direction %>" class="text-white text-decoration-none text-nowrap">Article <% if (sortParam=="articleName" ) {%>
+                                <% if (direction=="1" ) { %>
+                                    <i class="bi bi-caret-up-fill"></i>
+                                    <% } else if (direction=="2" ){%>
+                                        <i class="bi-caret-down-fill"></i>
+                                        <% } %>
+                                            <% } %> </a></th>
+                    <th scope="col"><a href="/products?filter=<%= filter %>&sortParam=brand&direction=<%= direction %>" class="text-white text-decoration-none text-nowrap">Brand <% if (sortParam=="brand" ) {%>
+                                <% if (direction=="1" ) { %>
+                                    <i class="bi bi-caret-up-fill"></i>
+                                    <% } else if (direction=="2" ){%>
+                                        <i class="bi-caret-down-fill"></i>
+                                        <% } %>
+                                            <% } %> </a></th>
+                    <th scope="col"><a href="/products?filter=<%= filter %>&sortParam=price&direction=<%= direction %>" class="text-white text-decoration-none text-nowrap">Price <% if (sortParam=="price" ) {%>
+                                <% if (direction=="1" ) { %>
+                                    <i class="bi bi-caret-up-fill"></i>
+                                    <% } else if (direction=="2" ){%>
+                                        <i class="bi-caret-down-fill"></i>
+                                        <% } %>
+                                            <% } %> </a></th>
+                    <th scope="col"><a href="/products?filter=<%= filter %>&sortParam=lastSold&direction=<%= direction %>" class="text-white text-decoration-none text-nowrap">Last Sold <% if (sortParam=="lastSold" ) {%>
+                                <% if (direction=="1" ) { %>
+                                    <i class="bi bi-caret-up-fill"></i>
+                                    <% } else if (direction=="2" ){%>
+                                        <i class="bi-caret-down-fill"></i>
+                                        <% } %>
+                                            <% } %> </a></th>
+                    <th scope="col"><a href="/products?filter=<%= filter %>&sortParam=type&direction=<%= direction %>" class="text-white text-decoration-none text-nowrap">Product Type <% if (sortParam=="type" ) {%>
+                                <% if (direction=="1" ) { %>
+                                    <i class="bi bi-caret-up-fill"></i>
+                                    <% } else if (direction=="2" ){%>
+                                        <i class="bi-caret-down-fill"></i>
+                                        <% } %>
+                                            <% } %> </a></th>
+                    <th scope="col"><a href="/products?filter=<%= filter %>&sortParam=inStock&direction=<%= direction %>" class="text-white text-decoration-none text-nowrap">In Stock <% if (sortParam=="inStock" ) {%>
+                                <% if (direction=="1" ) { %>
+                                    <i class="bi bi-caret-up-fill"></i>
+                                    <% } else if (direction=="2" ){%>
+                                        <i class="bi-caret-down-fill"></i>
+                                        <% } %>
+                                            <% } %> </a></th>
                 </tr>
             </thead>
             <tbody class="table-group-devider">
