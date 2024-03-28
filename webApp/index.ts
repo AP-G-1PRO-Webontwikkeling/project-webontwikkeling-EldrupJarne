@@ -36,13 +36,19 @@ app.get("/products", (req, res) => {
         sortParam = `${req.query.sortParam}`;
         direction = `${req.query.direction}`;
         // filter
-
+        if (filter !== "") {
+            shopProducts = [...shopProducts.filter(e => `${e.articleName}${e.brand}${e.type.typeName}`.toLowerCase().includes(filter.toLowerCase()))]
+        }
         // sort 
+        // see if sort param changed
+        // - if no, change direction
+        // - if yes, restart direction loop
         if (sortParam === lastSortParam) {
             direction = f.toggleDirection(direction)
         } else {
             direction = "1";
         }
+        // execute sort
         shopProducts.sort((a, b) => {
             if (direction === "" || direction === "0") {
                 return 0;
@@ -52,6 +58,7 @@ app.get("/products", (req, res) => {
                 return f.compareValues(a, b, sortParam) * -1;
             }
         })
+        // save sortParam to use next page visit
         lastSortParam = sortParam
     }
 
