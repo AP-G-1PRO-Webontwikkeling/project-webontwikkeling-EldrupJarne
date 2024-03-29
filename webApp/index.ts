@@ -37,6 +37,7 @@ app.get("/products/:articleName", (req, res) => {
         res.render("product", { product: product })
     }
 })
+
 app.get("/products", (req, res) => {
     let shopProducts = [...products]
 
@@ -66,9 +67,9 @@ app.get("/products", (req, res) => {
             if (direction === "" || direction === "0") {
                 return 0;
             } else if (direction === "1") {
-                return f.compareValues(a, b, sortParam)
+                return f.compareProducts(a, b, sortParam)
             } else {
-                return f.compareValues(a, b, sortParam) * -1;
+                return f.compareProducts(a, b, sortParam) * -1;
             }
         })
         // save sortParam to use next page visit
@@ -77,6 +78,69 @@ app.get("/products", (req, res) => {
 
     res.render("products", {
         products: shopProducts,
+        filter: filter,
+        direction: direction,
+        sortParam: sortParam
+    })
+})
+
+app.get("/types/:typeName", (req, res) => {
+    let type: i.Type | undefined = types.find(e => e.typeName == req.params.typeName)
+
+    if (type === undefined) {
+        let errormessage = `"${req.params.typeName}" is not a Type`
+        res.render("404", {
+            error: errormessage
+        })
+    } else {
+        res.render("type", { type: type })
+    }
+})
+
+app.get("/types", (req, res) => {
+    let shopTypes: i.Type[] = [...types]
+
+    let filter: string = "";
+    let sortParam: string = "typeName";
+    let direction: string = "";
+
+    if (Object.keys(req.query).length !== 0) {
+        filter = `${req.query.filter}`;
+        sortParam = `${req.query.sortParam}`;
+        direction = `${req.query.direction}`;
+
+        // filter
+        if (filter !== "") {
+            shopTypes = [...shopTypes.filter(e => {
+
+                return `${e.typeName}${e.description}${e.tags.join("")}`.toLowerCase().includes(filter.toLowerCase())
+            })]
+        }
+        // sort 
+        // see if sort param changed
+        // - if no, change direction
+        // - if yes, restart direction loop
+        if (sortParam === lastSortParam) {
+            direction = f.toggleDirection(direction)
+        } else {
+            direction = "1";
+        }
+        // execute sort
+        shopTypes.sort((a, b) => {
+            if (direction === "" || direction === "0") {
+                return 0;
+            } else if (direction === "1") {
+                return f.compareTypes(a, b, sortParam)
+            } else {
+                return f.compareTypes(a, b, sortParam) * -1;
+            }
+        })
+        // save sortParam to use next page visit
+        lastSortParam = sortParam
+    }
+
+    res.render("types", {
+        types: shopTypes,
         filter: filter,
         direction: direction,
         sortParam: sortParam

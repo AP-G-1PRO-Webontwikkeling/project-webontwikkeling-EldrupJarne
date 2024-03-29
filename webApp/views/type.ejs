@@ -1,3 +1,24 @@
 <%- include("partials/header") %>
-
+    <section class="card p-2 bg-dark text-white">
+        <h1 class="display-1 fw-bold mb-3">
+            <%= type.typeName %>
+        </h1>
+        <p class="mb-3">
+            <%= type.description %>
+        </p>
+        <ul class="list-group">
+            <% for (const tag of type.tags) { %>
+                <li class="list-group-item bg-dark text-white">
+                    <%= tag %>
+                </li>
+                <% } %>
+        </ul>
+        <p class="mt-3"> Active status:
+            <% if (type.statusActive) { %>
+                <span class="bg-success rounded p-1"> Active </span>
+                <% } else {%>
+                    <span class="bg-danger rounded p-1"> Not Active </span>
+                    <% } %>
+        </p>
+    </section>
     <%- include("partials/footer") %>
