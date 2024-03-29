@@ -27,6 +27,7 @@ app.get("/", (req, res) => {
 app.get("/products/:articleName", (req, res) => {
 
     let product: i.Product | undefined = products.find(e => e.articleName == req.params.articleName)
+
     if (product === undefined) {
         let errormessage = `"${req.params.articleName}" is not a product`
         res.render("404", {

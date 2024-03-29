@@ -1,10 +1,77 @@
 <%- include("partials/header") %>
-    <section class="d-flex flex-wrap">
-        <article class="card col-12 col-md-6">
-            <h1 class="display-1 fw-bold">
+    <section class="d-flex flex-wrap gap-3">
+        <article class="card col-12 col-md-5 p-2 bg-dark text-white">
+            <h1 class="display-3 fw-bold">
                 <%=product.articleName %>
             </h1>
-            <img src="<%= product.imageSrc %>" alt="<%= product.articleName %>">
+            <img src="<%= product.imageSrc %>" alt="<%= product.articleName %>" class="mt-auto">
+        </article>
+        <article class="col-12 col-md-6 p-2">
+            <h1 class="display-3 fw-bold mb-3">
+                By <%= product.brand %>
+            </h1>
+            <h3>specs</h3>
+            <ul class="list-group list-group-flush">
+                <% for (const spec of product.specifications) { %>
+                    <li class="list-group-item">
+                        <p>
+                            <%= spec %>
+                        </p>
+                    </li>
+                    <% } %>
+            </ul>
+        </article>
+        <article class="card col-12 p-2 bg-dark text-white">
+            <p>
+                <%= product.info %>
+            </p>
+            <p>
+                price: $<%= product.price %>
+            </p>
+            <p>
+                last sold on: <%= product.lastSold %>
+            </p>
+            <p>
+                Type: <a href="/types/<%= product.type.typeName %>" class="text-dark text-decoration-none">
+                    <%= product.type.typeName%> <i class=" bi bi-box-arrow-up-right"></i>
+                </a>
+            </p>
+            <% if (product.inStock) { %>
+                <p>
+                    in stock: <span class="text-success">YES</span>
+                </p>
+                <p>
+                    amount in stock: <%= product.count %>
+                </p>
+                <% } else {%>
+                    <p>
+                        in stock: <span class="text-danger">NO</span>
+                    </p>
+                    <% } %>
+        </article>
+        <article class="card col-12 p-2 gap-2 bg-dark text-white">
+            <% for (const review of product.reviews) { %>
+                <ul class="list-group">
+                    <li class="list-group-item bg-white text-dark">
+                        <article class="d-flex flex-wrap justify-content-between">
+                            <p class="col-6 mb-1">
+                                <%= review.username %>
+                            </p>
+                            <span class="col-6 text-end">
+                                <% for (let i=0; i < review.rating; i++) { %>
+                                    <i class="bi bi-star-fill"></i>
+                                    <% } %>
+                                        <% for (let i=0; i < 5 - review.rating; i++) { %>
+                                            <i class="bi bi-star"></i>
+                                            <% } %>
+                            </span>
+                            <p class="col-12 border-top border-dark">
+                                <%= review.comment %>
+                            </p>
+                        </article>
+                    </li>
+                </ul>
+                <% } %>
         </article>
     </section>
     <%- include("partials/footer") %>
