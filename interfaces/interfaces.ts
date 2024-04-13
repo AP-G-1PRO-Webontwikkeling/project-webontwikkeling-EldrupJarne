@@ -16,6 +16,7 @@ export interface Product {
   reviews: Review[];
 }
 export interface Type {
+  [key: string]: any;
   id: number;
   typeName: string;
   description: string;

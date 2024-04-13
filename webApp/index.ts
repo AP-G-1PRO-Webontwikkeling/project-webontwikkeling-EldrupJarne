@@ -39,7 +39,7 @@ app.get("/products/:articleName", (req, res) => {
 })
 
 app.get("/products", (req, res) => {
-    let shopProducts = [...products]
+    let shopProducts: i.Product[] = [...products]
 
     let filter: string = "";
     let sortParam: string = "articleName";
@@ -86,6 +86,7 @@ app.get("/products", (req, res) => {
 
 app.get("/types/:typeName", (req, res) => {
     let type: i.Type | undefined = types.find(e => e.typeName == req.params.typeName)
+    let productsOfType: i.Product[] = products.filter(e => e.type.typeName === type?.typeName)
 
     if (type === undefined) {
         let errormessage = `"${req.params.typeName}" is not a Type`
@@ -93,7 +94,10 @@ app.get("/types/:typeName", (req, res) => {
             error: errormessage
         })
     } else {
-        res.render("type", { type: type })
+        res.render("type", {
+            type: type,
+            products: productsOfType
+        })
     }
 })
 

@@ -21,4 +21,27 @@
                     <% } %>
         </p>
     </section>
-    <%- include("partials/footer") %>
+    <% if (type.statusActive) { %>
+        <h1 class="display-1 fw-bold">All products of type <%= type.typeName %>
+        </h1>
+        <section class="row g-3">
+            <% for (const product of products) { %>
+                <article class="bg-dark col-12 col-md-4 p-3 g-3">
+                    <a href="/products/<%= product.articleName %>" class="text-white text-decoration-none d-block h-100">
+                        <img src="<%= product.imageSrc %>" alt="<%= product.articleName %>" class="w-100 rounded">
+                        <h1 class="display-6">
+                            <%= product.articleName %>
+                        </h1>
+                        <p>
+                            <%= product.brand %>
+                        </p>
+                        <p class="mt-auto">$<%= product.price %>
+                        </p>
+                    </a>
+                </article>
+                <% } %>
+        </section>
+        <% } %>
+
+
+            <%- include("partials/footer") %>
