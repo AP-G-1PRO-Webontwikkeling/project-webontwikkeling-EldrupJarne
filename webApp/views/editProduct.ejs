@@ -1,0 +1,38 @@
+<%- include('partials/header') %>
+    <article class="container d-flex flex-wrap justify-content-center gap-3 p-5 rounded border border-dark border-3 col-12 col-sm-10 col-md-7 col-lg-5">
+        <img src="<%= product.imageSrc %>" alt="<%= product.articleName %>" class="rounded-circle col-8 border border-3 border-dark">
+        <form action="/editProduct/<%= product.articleName %>" method="post" class="d-flex flex-wrap gap-1">
+            <input class="form-control" type="text" name="name" id="name" placeholder="article name" value="<%= product.articleName %>">
+            <input class="form-control" type="text" name="brand" id="brand" placeholder="article brand" value="<%= product.brand %>">
+            <input class="form-control" type="text" name="price" id="price" placeholder="article price" value="<%= product.price %>">
+            <input class="form-control" type="date" name="lastSold" id="lastSold" placeholder="last sold date" value="<%= product.lastSold %>">
+            <select class="form-select mb-3" name="type" id="type">
+                <% for(const type of types ) { %>
+                    <option value="<%= type.typeName %>" <% if (selectedType===type) { %> selected <%}%>>
+                            <%= type.typeName %>
+                    </option>
+                    <% } %>
+            </select>
+            <% if (error) { %>
+                <% if (error=="empty" ) { %>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-danger"></i><strong>Error</strong> fill in all fields
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <% } else if (error=="to long" ) { %>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Error</strong> Fields have a max length of 200 characters
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <% } else if (error=="negative" ) { %>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Error</strong> numbers cannot be negative
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                            <% } %>
+
+                                <% } %>
+                                    <button type="submit" class="col-12 btn btn-dark">Confirm edit</button>
+        </form>
+    </article>
+    <%- include('partials/footer') %>

@@ -2,17 +2,19 @@ import express from "express";
 import ejs from "ejs";
 import * as i from "../interfaces/interfaces"
 import * as f from "./functions"
+import * as db from "./db"
+import bodyParser from "body-parser";
 
 
 let app = express();
 app.set("view engine", "ejs");
-app.use(express.static('public'))
 app.set("port", 5500);
+app.use(express.static('public'))
+app.use(bodyParser.urlencoded({ extended: true }));
 
 let products: i.Product[];
 let types: i.Type[];
 let lastSortParam: string = "articleName";
-
 
 app.get("/", (req, res) => {
     let rng: number[] = f.getRandomNumbers(0, products.length, 6);
@@ -24,18 +26,19 @@ app.get("/", (req, res) => {
     }))
     res.render("index", { items: items })
 })
-app.get("/products/:articleName", (req, res) => {
 
-    let product: i.Product | undefined = products.find(e => e.articleName == req.params.articleName)
+app.get("/products/:articleName", async (req, res) => {
 
-    if (product === undefined) {
+    let product: i.Product | null = await db.productsCollection.findOne({ articleName: req.params.articleName })
+
+    if (!product) {
         let errormessage = `"${req.params.articleName}" is not a product`
         res.render("404", {
             error: errormessage
         })
-    } else {
-        res.render("product", { product: product })
+        return;
     }
+    res.render("product", { product: product })
 })
 
 app.get("/products", (req, res) => {
@@ -82,6 +85,105 @@ app.get("/products", (req, res) => {
         direction: direction,
         sortParam: sortParam
     })
+})
+
+app.get("/editProduct/:productName", async (req, res) => {
+    const productName: string = req.params.productName
+    const product: i.Product | null = await db.productsCollection.findOne({ articleName: productName })
+    if (!product) {
+        let errormessage = `"${productName}" is not a product`
+        res.render("404", {
+            error: errormessage
+        })
+        return;
+    }
+    const selectedType: i.Type = product.type
+    res.render("editProduct", {
+        product: product,
+        types: types,
+        selectedType: selectedType,
+        error: undefined
+    })
+})
+
+app.post("/editProduct/:productName", async (req, res) => {
+    const productName: string = req.params.productName
+    const { name, brand, price, lastSold, type } = req.body
+    let product: i.Product | null = await db.productsCollection.findOne({ articleName: productName })
+    if (!product) {
+        let errormessage = `"${productName}" is not a product`
+        res.render("404", {
+            error: errormessage
+        })
+        return;
+    }
+    const selectedType: i.Type | null = await db.typesCollection.findOne({ typeName: type })
+    if (!selectedType) {
+        let errormessage = `"${type}" is not a type`
+        res.render("404", {
+            error: errormessage
+        })
+        return;
+    }
+    const nameCheck = f.isValid(name)
+    const brandCheck = f.isValid(brand)
+    const priceCheck = f.isValid(parseInt(price))
+    const lastSoldCheck = f.isValid(lastSold)
+    const typeCheck = f.isValid(selectedType)
+
+    if (!nameCheck.isValid) return res.render("editProduct", {
+        product: product,
+        types: types,
+        selectedType: selectedType,
+        error: nameCheck.errorCode
+    })
+    if (!brandCheck.isValid) return res.render("editProduct", {
+        product: product,
+        types: types,
+        selectedType: selectedType,
+        error: brandCheck.errorCode
+    })
+    if (!priceCheck.isValid) return res.render("editProduct", {
+        product: product,
+        types: types,
+        selectedType: selectedType,
+        error: priceCheck.errorCode
+    })
+    if (!lastSoldCheck.isValid) return res.render("editProduct", {
+        product: product,
+        types: types,
+        selectedType: selectedType,
+        error: lastSoldCheck.errorCode
+    })
+    if (!typeCheck.isValid) return res.render("editProduct", {
+        product: product,
+        types: types,
+        selectedType: selectedType,
+        error: typeCheck.errorCode
+    })
+
+    await db.productsCollection.updateOne({ index: product.index }, {
+        $set: {
+            articleName: name.trim(),
+            brand: brand.trim(),
+            price: price,
+            lastSold: lastSold.trim(),
+            type: selectedType
+        }
+    })
+
+
+    products = await db.productsCollection.find({}).toArray();
+    product = await db.productsCollection.findOne({ articleName: product.articleName })
+
+    if (!product) {
+        let errormessage = `"${productName}" is not a product`
+        res.render("404", {
+            error: errormessage
+        })
+        return;
+    }
+    res.redirect(`/products/${product.articleName}`)
 })
 
 app.get("/types/:typeName", (req, res) => {
@@ -152,12 +254,8 @@ app.get("/types", (req, res) => {
 })
 
 app.listen(app.get("port"), async () => {
+    await db.connect()
+    products = await db.productsCollection.find({}).toArray();
+    types = await db.typesCollection.find({}).toArray();
     console.log("[server] listening at http://localhost:" + app.get("port"));
-    let productsFetch: any = await fetch("https://github.com/EldrupJarne/JSON-Host/raw/main/products.json");
-    productsFetch = await productsFetch.json();
-    products = await productsFetch;
-    let typesFetch: any = await fetch("https://github.com/EldrupJarne/JSON-Host/raw/main/types.json");
-    typesFetch = await typesFetch.json();
-    types = await typesFetch;
-    console.log("[server] API fetched!");
 })
