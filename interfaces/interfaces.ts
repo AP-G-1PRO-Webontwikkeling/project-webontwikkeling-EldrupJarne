@@ -28,6 +28,3 @@ export interface Review {
   rating: number;
   comment: string;
 }
-export interface DirectionMap {
-  [key: string]: any
-}
