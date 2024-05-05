@@ -47,7 +47,7 @@ export function toggleDirection(direction: string): string {
 export function isValid(value: any): { isValid: boolean, errorCode?: "empty" | "to long" | "negative" } {
 
     if (typeof value === "string") {
-        if (value === "") return { isValid: false, errorCode: "empty" }
+        if (!value || value == "") return { isValid: false, errorCode: "empty" }
         else if (value.length > 200) return { isValid: false, errorCode: "to long" }
         else return { isValid: true }
     } else if (typeof value === "number") {

@@ -1,8 +1,8 @@
 <%- include('partials/header') %>
-    <article class="container d-flex flex-wrap justify-content-center gap-3 p-5 rounded border border-dark border-3 col-12 col-sm-10 col-md-7 col-lg-5">
+    <article class="container d-flex flex-wrap justify-content-center gap-3 p-5 rounded border border-dark border-3 col-12 col-sm-10 col-md-7 col-lg-5 bg-dark">
         <img src="<%= product.imageSrc %>" alt="<%= product.articleName %>" class="rounded-circle col-8 border border-3 border-dark">
         <form action="/editProduct/<%= product.articleName %>" method="post" class="d-flex flex-wrap gap-1">
-            <input class="form-control" type="text" name="name" id="name" placeholder="article name" value="<%= product.articleName %>">
+            <input class="form-control" type="text" name="name" id="name" placeholder="article name" value="<%= newName %>">
             <input class="form-control" type="text" name="brand" id="brand" placeholder="article brand" value="<%= product.brand %>">
             <input class="form-control" type="text" name="price" id="price" placeholder="article price" value="<%= product.price %>">
             <input class="form-control" type="date" name="lastSold" id="lastSold" placeholder="last sold date" value="<%= product.lastSold %>">
@@ -32,7 +32,10 @@
                             <% } %>
 
                                 <% } %>
-                                    <button type="submit" class="col-12 btn btn-dark">Confirm edit</button>
+                                    <div class="d-flex col-12 gap-1">
+                                        <a href="/products/<%= product.articleName %>" class="w-100 btn btn-danger">Cancel edit</a>
+                                        <button type="submit" class="w-100 btn btn-success">Confirm edit</button>
+                                    </div>
         </form>
     </article>
     <%- include('partials/footer') %>

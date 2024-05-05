@@ -41,8 +41,8 @@ app.get("/products/:articleName", async (req, res) => {
     res.render("product", { product: product })
 })
 
-app.get("/products", (req, res) => {
-    let shopProducts: i.Product[] = [...products]
+app.get("/products", async (req, res) => {
+    let shopProducts: i.Product[] = await db.productsCollection.find({}).toArray()
 
     let filter: string = "";
     let sortParam: string = "articleName";
@@ -100,6 +100,7 @@ app.get("/editProduct/:productName", async (req, res) => {
     const selectedType: i.Type = product.type
     res.render("editProduct", {
         product: product,
+        newName: product.articleName,
         types: types,
         selectedType: selectedType,
         error: undefined
@@ -131,32 +132,54 @@ app.post("/editProduct/:productName", async (req, res) => {
     const lastSoldCheck = f.isValid(lastSold)
     const typeCheck = f.isValid(selectedType)
 
+    const tempProduct: i.Product = {
+        index: product.index,
+        articleName: name,
+        price: price,
+        lastSold: lastSold,
+        imageSrc: product.imageSrc,
+        type: type,
+        brand: brand,
+        infoShort: product.infoShort,
+        info: product.info,
+        count: product.count,
+        isOnCart: product.isOnCart,
+        isOnWishlist: product.isOnWishlist,
+        specifications: product.specifications,
+        reviews: product.reviews
+    }
+
     if (!nameCheck.isValid) return res.render("editProduct", {
-        product: product,
+        product: tempProduct,
+        newName: name,
         types: types,
         selectedType: selectedType,
         error: nameCheck.errorCode
     })
     if (!brandCheck.isValid) return res.render("editProduct", {
-        product: product,
+        product: tempProduct,
+        newName: name,
         types: types,
         selectedType: selectedType,
         error: brandCheck.errorCode
     })
     if (!priceCheck.isValid) return res.render("editProduct", {
-        product: product,
+        product: tempProduct,
+        newName: name,
         types: types,
         selectedType: selectedType,
         error: priceCheck.errorCode
     })
     if (!lastSoldCheck.isValid) return res.render("editProduct", {
-        product: product,
+        product: tempProduct,
+        newName: name,
         types: types,
         selectedType: selectedType,
         error: lastSoldCheck.errorCode
     })
     if (!typeCheck.isValid) return res.render("editProduct", {
-        product: product,
+        product: tempProduct,
+        newName: name,
         types: types,
         selectedType: selectedType,
         error: typeCheck.errorCode
@@ -172,9 +195,8 @@ app.post("/editProduct/:productName", async (req, res) => {
         }
     })
 
-
     products = await db.productsCollection.find({}).toArray();
-    product = await db.productsCollection.findOne({ articleName: product.articleName })
+    product = await db.productsCollection.findOne({ articleName: name })
 
     if (!product) {
         let errormessage = `"${productName}" is not a product`
