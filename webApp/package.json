@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.ts",
+    "start": "npm install; nodemon index.ts",
     "dev": "browser-sync start --proxy 'localhost:5500' --files './views/**/*'"
   },
   "keywords": [],
