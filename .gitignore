@@ -1,2 +1,7 @@
-webApp/node_modules/
-webApp/package-lock.json
+**/node_modules/
+**/package-lock.json
+package-lock.json
+cspell.json
+Dutch.aff
+Dutch.dic
+nl-NL.trie/
