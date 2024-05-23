@@ -15,17 +15,17 @@
             </select>
             <% if (error) { %>
                 <% if (error=="empty" ) { %>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <div class="alert alert-danger col-12 alert-dismissible fade show" role="alert">
                         <i class="bi bi-danger"></i><strong>Error</strong> fill in all fields
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     <% } else if (error=="to long" ) { %>
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <div class="alert alert-danger col-12 alert-dismissible fade show" role="alert">
                             <strong>Error</strong> Fields have a max length of 200 characters
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                         <% } else if (error=="negative" ) { %>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <div class="alert alert-danger col-12 alert-dismissible fade show" role="alert">
                                 <strong>Error</strong> numbers cannot be negative
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>

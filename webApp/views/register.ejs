@@ -1,0 +1,20 @@
+<%- include('partials/header') %>
+    <div class="d-flex justify-content-center">
+        <form action="/login/register" method="post" class="d-flex flex-wrap justify-content-between gap-2 col-12 col-md-8 col-lg-6">
+            <label for="username" class="form-label"> username</label>
+            <input type="input" name="username" id="username" placeholder="username" class="form-control">
+            <label for="password" class="form-label"> password</label>
+            <input type="password" name="password" id="password" placeholder="password" class="form-control">
+            <button type="submit" class="btn btn-dark">register</button>
+            <a href="/login/register" class="btn btn-link">login</a>
+            <% if (message) { %>
+                <div class="bg-danger text-white p-2 rounded col-12">
+                    <strong>
+                        <%= message.type %>
+                    </strong>
+                    <%= message.message %>
+                </div>
+                <% } %>
+        </form>
+    </div>
+    <%- include('partials/footer') %>

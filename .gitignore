@@ -5,3 +5,5 @@ cspell.json
 Dutch.aff
 Dutch.dic
 nl-NL.trie/
+.env
+**/.env
