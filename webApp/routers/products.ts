@@ -26,7 +26,6 @@ export default function productsRouter() {
     router.get("/", async (req, res) => {
         let { filter, sortParam, direction } = req.query
         const filterString = `${filter}`.toLowerCase();
-        console.log(filterString);
 
         const queryFilter = filterString !== "" && filterString !== "undefined" ? {
             $or: [
