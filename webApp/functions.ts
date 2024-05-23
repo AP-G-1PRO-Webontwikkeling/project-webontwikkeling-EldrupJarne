@@ -1,5 +1,4 @@
 import { Product, Type } from "../interfaces/interfaces";
-
 export function getRandomNumber(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min)) + min;
 }
@@ -45,7 +44,6 @@ export function toggleDirection(direction: string): string {
     }
 }
 export function isValid(value: any): { isValid: boolean, errorCode?: "empty" | "to long" | "negative" } {
-
     if (typeof value === "string") {
         if (value == null || value == "") return { isValid: false, errorCode: "empty" }
         else if (value.length > 200) return { isValid: false, errorCode: "to long" }

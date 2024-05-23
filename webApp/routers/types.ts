@@ -6,7 +6,6 @@ import { secureMiddleware } from "../middleware/secureMiddleware";
 import ShowMenuMiddleware from "../middleware/showMenuMiddleWare";
 export default function typesRouter() {
     let lastSortParam: string = "articleName";
-
     const router = express.Router();
     router.use(ShowMenuMiddleware)
     router.use(secureMiddleware)
@@ -15,12 +14,10 @@ export default function typesRouter() {
         if (!type) {
             return res.redirect("/404")
         }
-
         let productsOfType: i.Product[] = await db.productsCollection.find({ "type.typeName": type.typeName }).toArray()
-
         if (type === undefined) {
             let errormessage = `"${req.params.typeName}" is not a Type`
-            res.render("404", {
+            return res.render("404", {
                 error: errormessage
             })
         } else {
@@ -58,7 +55,6 @@ export default function typesRouter() {
             query = query.sort(sortObj)
         }
         let shopTypes: i.Type[] = await query.toArray();
-
         res.render("types", {
             types: shopTypes,
             filter: filter,
@@ -66,6 +62,5 @@ export default function typesRouter() {
             sortParam: sortParam
         })
     })
-
     return router;
 }

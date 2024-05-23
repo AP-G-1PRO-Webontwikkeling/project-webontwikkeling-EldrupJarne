@@ -5,7 +5,6 @@ import * as f from "../functions"
 import { secureMiddleware } from "../middleware/secureMiddleware";
 import { restrictedAccessMiddleware } from "../middleware/restrictedAccessMiddleware"
 import ShowMenuMiddleware from "../middleware/showMenuMiddleWare";
-
 export default function editProductRouter() {
     const router = express.Router();
     router.use(ShowMenuMiddleware)
@@ -42,7 +41,6 @@ export default function editProductRouter() {
             return res.render("404", {
                 error: errormessage
             })
-            return;
         }
         const selectedType: i.Type | null = await db.typesCollection.findOne({ typeName: type })
         if (!selectedType) {
@@ -50,14 +48,12 @@ export default function editProductRouter() {
             return res.render("404", {
                 error: errormessage
             })
-            return;
         }
         const nameCheck = f.isValid(name)
         const brandCheck = f.isValid(brand)
         const priceCheck = f.isValid(parseInt(price))
         const lastSoldCheck = f.isValid(lastSold)
         const typeCheck = f.isValid(selectedType)
-
         const tempProduct: i.Product = {
             index: product.index,
             articleName: name,
@@ -74,7 +70,6 @@ export default function editProductRouter() {
             specifications: product.specifications,
             reviews: product.reviews
         }
-
         if (!nameCheck.isValid) return res.render("editProduct", {
             product: tempProduct,
             newName: name,
@@ -110,7 +105,6 @@ export default function editProductRouter() {
             selectedType: selectedType,
             error: typeCheck.errorCode
         })
-
         await db.productsCollection.updateOne({ index: product.index }, {
             $set: {
                 articleName: name.trim(),
@@ -121,13 +115,11 @@ export default function editProductRouter() {
             }
         })
         product = await db.productsCollection.findOne({ articleName: name })
-
         if (!product) {
             let errormessage = `"${productName}" is not a product`
-            res.render("404", {
+            return res.render("404", {
                 error: errormessage
             })
-            return;
         }
         res.redirect(`/products/${product.articleName}`)
     })

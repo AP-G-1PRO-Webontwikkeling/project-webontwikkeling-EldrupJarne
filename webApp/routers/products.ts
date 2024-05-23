@@ -6,27 +6,22 @@ import { secureMiddleware } from "../middleware/secureMiddleware";
 import ShowMenuMiddleware from "../middleware/showMenuMiddleWare";
 export default function productsRouter() {
     let lastSortParam: string = "articleName";
-
     const router = express.Router()
     router.use(ShowMenuMiddleware)
     router.use(secureMiddleware)
     router.get("/:articleName", async (req, res) => {
-
         let product: i.Product | null = await db.productsCollection.findOne({ articleName: req.params.articleName })
-
         if (!product) {
             let errormessage = `"${req.params.articleName}" is not a product`
-            res.render("404", {
+            return res.render("404", {
                 error: errormessage
             })
-            return;
         }
         res.render("product", { product: product })
     })
     router.get("/", async (req, res) => {
         let { filter, sortParam, direction } = req.query
         const filterString = `${filter}`.toLowerCase();
-
         const queryFilter = filterString !== "" && filterString !== "undefined" ? {
             $or: [
                 { articleName: { $regex: filterString, $options: 'i' } },
@@ -47,14 +42,11 @@ export default function productsRouter() {
         } else {
             sortObj[`${sortParam}`] = -1
         }
-
         let query = db.productsCollection.find(queryFilter)
-
         if (sortObj) {
             query = query.sort(sortObj)
         }
         let shopProducts: i.Product[] = await query.toArray();
-
         res.render("products", {
             products: shopProducts,
             filter: filter,

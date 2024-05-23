@@ -3,12 +3,9 @@ import * as db from "../db"
 import * as i from "../interfaces"
 import hideMenuMiddleware from "../middleware/hideMenuMiddleWare";
 import bcrypt from "bcrypt"
-
 export default function loginRouter() {
     const router = express.Router();
-
     router.use(hideMenuMiddleware)
-
     router.get("/", (req, res) => {
         if (req.session.user) {
             res.locals.user = req.session.user;
@@ -53,7 +50,6 @@ export default function loginRouter() {
             req.session.message = { type: "error", message: e.message }
             res.redirect("/login/register")
         }
-
     })
     return router;
 }

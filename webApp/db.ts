@@ -2,23 +2,18 @@ import { Db, Collection, MongoClient } from "mongodb"
 import bcrypt from "bcrypt";
 import dotenv from "dotenv"
 import * as i from "./interfaces"
-
 const saltRounds: number = 10;
 dotenv.config();
-
 const Client = new MongoClient(process.env.MONGO_URI || "mongodb://localhost:27017");
-
 const db: Db = Client.db("aplinePulse");
-
 export const productsCollection: Collection<i.Product> = db.collection<i.Product>("products")
 export const typesCollection: Collection<i.Type> = db.collection<i.Type>("types")
 export const usersCollection: Collection<i.User> = db.collection<i.User>("Users")
-
 export async function connect() {
     try {
         await Client.connect();
         console.log("[server] Connected to database\n[server] sarted seeding process");
-        await seed(true);
+        await seed();
         process.on("SIGINT", exit);
         process.on("SIGUSR2", exit);
     } catch (error) {
@@ -88,7 +83,6 @@ async function createInitialUsers() {
             password: await bcrypt.hash(adminPassword, saltRounds),
             role: "ADMIN"
         });
-
         // get user login data from .env, make a user and insert it into db
         let userEmail: string | undefined = process.env.USER_USERNAME;
         let userPassword: string | undefined = process.env.USER_PASSWORD;
@@ -106,8 +100,6 @@ async function createInitialUsers() {
         await exit()
         process.exit(1)
     }
-
-
 }
 export async function login(username: string, password: string) {
     if (username === "" || password === "") {

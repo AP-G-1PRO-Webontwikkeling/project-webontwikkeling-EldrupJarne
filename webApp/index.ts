@@ -1,8 +1,6 @@
 import express from "express";
-import ejs from "ejs";
-import * as i from "./interfaces"
-import * as f from "./functions"
-import * as db from "./db"
+import { Product } from "./interfaces"
+import { productsCollection, connect } from "./db"
 import bodyParser from "body-parser";
 import editProductRouter from "./routers/editProduct";
 import productsRouter from "./routers/products";
@@ -12,8 +10,6 @@ import loginRouter from "./routers/login";
 import { secureMiddleware } from "./middleware/secureMiddleware";
 import { flashMiddleware } from "./middleware/flashMiddleware";
 import ShowMenuMiddleware from "./middleware/showMenuMiddleWare";
-
-
 let app = express();
 app.set("view engine", "ejs");
 app.set("port", 5500);
@@ -22,19 +18,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session);
 app.use(flashMiddleware);
 app.use(ShowMenuMiddleware)
-
 app.get("/", secureMiddleware, async (req, res) => {
-    const randomItems: i.Product[] = await db.productsCollection.aggregate([{ $sample: { size: 6 } }]).toArray() as i.Product[]
+    const randomItems: Product[] = await productsCollection.aggregate([{ $sample: { size: 6 } }]).toArray() as Product[]
     res.render("index", { items: randomItems })
 })
 app.use("/types", typesRouter())
 app.use("/products", productsRouter())
 app.use("/editProduct", editProductRouter())
 app.use("/login", loginRouter())
-
+app.all("*", (req, res) => res.render("404", { error: "Page not found" }))
 app.listen(app.get("port"), async () => {
     try {
-        await db.connect()
+        await connect()
         console.log("[server] listening at http://localhost:" + app.get("port"));
     } catch (error) {
         console.log(error);
