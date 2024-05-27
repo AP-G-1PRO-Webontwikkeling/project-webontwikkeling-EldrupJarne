@@ -13,7 +13,7 @@ export async function connect() {
     try {
         await Client.connect();
         console.log("[server] Connected to database\n[server] sarted seeding process");
-        await seed();
+        await seed(false);
         process.on("SIGINT", exit);
         process.on("SIGUSR2", exit);
     } catch (error) {

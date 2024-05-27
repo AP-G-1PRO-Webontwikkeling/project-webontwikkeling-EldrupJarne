@@ -26,7 +26,7 @@ app.use("/types", typesRouter())
 app.use("/products", productsRouter())
 app.use("/editProduct", editProductRouter())
 app.use("/login", loginRouter())
-app.all("*", (req, res) => res.render("404", { error: "Page not found" }))
+app.all("*", secureMiddleware, (req, res) => res.render("404", { error: "Page not found" }))
 app.listen(app.get("port"), async () => {
     try {
         await connect()
